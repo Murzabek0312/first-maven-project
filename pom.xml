@@ -40,6 +40,7 @@
         <lombok.version>1.18.28</lombok.version>
         <org.postgresql.version>42.6.0</org.postgresql.version>
         <org.slf4j.version>1.7.36</org.slf4j.version>
+        <org.testcontainers.version>1.18.3</org.testcontainers.version>
     </properties>
 
     <dependencyManagement>
@@ -62,6 +63,7 @@
                 <version>${lombok.version}</version>
                 <scope>provided</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
@@ -70,11 +72,19 @@
             </dependency>
 
             <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${org.testcontainers.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
                 <version>${org.junit.version}</version>
                 <scope>test</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

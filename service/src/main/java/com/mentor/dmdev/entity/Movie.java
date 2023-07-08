@@ -4,9 +4,11 @@ import com.mentor.dmdev.enums.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +16,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
@@ -22,6 +26,7 @@ import java.util.List;
 
 @Data
 @Builder
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -32,28 +37,39 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "director")
-    private long director;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Actor director;
 
-    @Column(name = "date_to_release")
+    @Column(nullable = false)
     private LocalDate releaseDate;
 
-    @Column(name = "country")
+    @Column(nullable = false)
     private String country;
 
-    @Column(name = "genre")
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    @Column(name = "subscription_id")
-    private long subscriptionId;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Subscription subscription;
 
     @Builder.Default
     @ToString.Exclude
-    @OneToMany(mappedBy = "movieId")
+    @OneToMany(mappedBy = "movie")
     private List<MoviesActor> moviesActors = new ArrayList<>();
 
+    @Builder.Default
+    @ToString.Exclude
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FeedBack> feedBacks = new ArrayList<>();
+
+    public void addFeedback(FeedBack feedBack) {
+        feedBacks.add(feedBack);
+        feedBack.setMovie(this);
+    }
 }
