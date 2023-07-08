@@ -175,7 +175,7 @@ class HibernateRunnerTest {
             var movie1 = Movie.builder()
                     .name("movieName1")
                     .director((long) directorId)
-                    .dateToRelease(LocalDate.of(2012, 12, 22))
+                    .releaseDate(LocalDate.of(2012, 12, 22))
                     .country("country1")
                     .genre(Genre.TRILLER)
                     .subscriptionId((long) subscriptionId)
@@ -184,7 +184,7 @@ class HibernateRunnerTest {
             var movie2 = Movie.builder()
                     .name("movieName2")
                     .director((long) directorId)
-                    .dateToRelease(LocalDate.of(2022, 2, 12))
+                    .releaseDate(LocalDate.of(2022, 2, 12))
                     .country("country2")
                     .genre(Genre.ACTION)
                     .subscriptionId((long) subscriptionId)
@@ -200,7 +200,7 @@ class HibernateRunnerTest {
 
             assertEquals("movieName1", actualResult.getName());
             assertEquals((long) directorId, actualResult.getDirector());
-            assertEquals(LocalDate.of(2012, 12, 22), actualResult.getDateToRelease());
+            assertEquals(LocalDate.of(2012, 12, 22), actualResult.getReleaseDate());
             assertEquals("country1", actualResult.getCountry());
             assertEquals(Genre.TRILLER, actualResult.getGenre());
             assertEquals((long) subscriptionId, actualResult.getSubscriptionId());
@@ -242,7 +242,7 @@ class HibernateRunnerTest {
             var movie = Movie.builder()
                     .name("movieName")
                     .director((long) directorId)
-                    .dateToRelease(LocalDate.of(2022, 2, 12))
+                    .releaseDate(LocalDate.of(2022, 2, 12))
                     .country("country")
                     .genre(Genre.TRILLER)
                     .subscriptionId((long) subscriptionId)
@@ -303,7 +303,7 @@ class HibernateRunnerTest {
             var movie = Movie.builder()
                     .name("movieName")
                     .director((long) directorId)
-                    .dateToRelease(LocalDate.of(2022, 2, 12))
+                    .releaseDate(LocalDate.of(2022, 2, 12))
                     .country("country")
                     .genre(Genre.TRILLER)
                     .subscriptionId((long) subscriptionId)

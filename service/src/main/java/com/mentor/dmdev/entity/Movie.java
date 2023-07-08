@@ -25,12 +25,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "movies")
+@Table(name = "movie")
 public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -39,7 +39,7 @@ public class Movie {
     private long director;
 
     @Column(name = "date_to_release")
-    private LocalDate dateToRelease;
+    private LocalDate releaseDate;
 
     @Column(name = "country")
     private String country;

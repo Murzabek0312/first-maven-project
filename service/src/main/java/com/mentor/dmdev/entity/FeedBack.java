@@ -20,12 +20,12 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "feedbacks")
+@Table(name = "feedback")
 public class FeedBack {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "movie_id")
     private long movieId;

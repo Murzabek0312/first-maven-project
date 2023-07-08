@@ -17,12 +17,12 @@ import javax.persistence.Table;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "movies_actors")
+@Table(name = "movie_actor")
 public class MoviesActor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "movie_id")
     private long movieId;

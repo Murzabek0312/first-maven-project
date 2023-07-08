@@ -1,4 +1,4 @@
-CREATE TABLE movies
+CREATE TABLE movie
 (
     id              BIGSERIAL PRIMARY KEY,
     name            varchar(128) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE movies
     subscription_id BIGINT       NOT NULL references subscriptions (id)
 );
 
-CREATE TABLE actors
+CREATE TABLE actor
 (
     id         BIGSERIAL PRIMARY KEY,
     firstname  varchar(128) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE actors
 );
 
 
-CREATE TABLE movies_actors
+CREATE TABLE movie_actor
 (
     id       BIGSERIAL PRIMARY KEY,
     movie_id BIGINT NOT NULL references movies (id),
@@ -30,21 +30,21 @@ CREATE TABLE users
 (
     id              BIGSERIAL PRIMARY KEY,
     username        varchar(128) NOT NULL,
-    firstname      varchar(128) NOT NULL,
-    secondname     varchar(128),
+    firstname       varchar(128) NOT NULL,
+    secondname      varchar(128),
     password        varchar(128) NOT NULL,
     email           varchar(128) NOT NULL,
-    subscription_id BIGINT       NOT NULL references subscriptions (id)
+    subscription_id BIGINT references subscriptions (id)
 );
 
-CREATE TABLE subscriptions
+CREATE TABLE subscription
 (
     id     BIGSERIAL PRIMARY KEY,
     type   varchar(128) NOT NULL,
     status varchar(128) NOT NULL
 );
 
-CREATE TABLE feedbacks
+CREATE TABLE feedback
 (
     id       BIGSERIAL PRIMARY KEY,
     movie_id BIGINT      NOT NULL references movies (id),
