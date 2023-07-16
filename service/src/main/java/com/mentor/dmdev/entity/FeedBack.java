@@ -21,7 +21,7 @@ import javax.persistence.Table;
 
 @Data
 @Builder
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -36,7 +36,7 @@ public class FeedBack {
     @JoinColumn(nullable = false)
     private Movie movie;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private User user;
 

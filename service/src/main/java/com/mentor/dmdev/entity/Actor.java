@@ -18,12 +18,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(exclude = "moviesActors")
 @Entity
-@Data
 @Table(name = "actor")
 public class Actor {
 

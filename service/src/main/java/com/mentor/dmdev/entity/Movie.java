@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +27,7 @@ import java.util.List;
 
 @Data
 @Builder
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(exclude = {"moviesActors,feedbacks"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -40,7 +41,7 @@ public class Movie {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Actor director;
 
@@ -54,7 +55,7 @@ public class Movie {
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Subscription subscription;
 
@@ -66,10 +67,10 @@ public class Movie {
     @Builder.Default
     @ToString.Exclude
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FeedBack> feedBacks = new ArrayList<>();
+    private List<FeedBack> feedbacks = new ArrayList<>();
 
     public void addFeedback(FeedBack feedBack) {
-        feedBacks.add(feedBack);
+        feedbacks.add(feedBack);
         feedBack.setMovie(this);
     }
 }
