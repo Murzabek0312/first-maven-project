@@ -5,6 +5,7 @@ import com.mentor.dmdev.enums.SubscriptionTypes;
 import com.mentor.dmdev.util.HibernateTestUtil;
 import lombok.Cleanup;
 import org.hibernate.SessionFactory;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -115,4 +116,8 @@ class SubscriptionTest {
         session.getTransaction().rollback();
     }
 
+    @AfterAll
+    static void clear() {
+        sessionFactory.close();
+    }
 }

@@ -19,7 +19,7 @@ import javax.persistence.Table;
 
 @Data
 @Builder
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

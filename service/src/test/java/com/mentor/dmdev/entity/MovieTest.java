@@ -1,16 +1,20 @@
 package com.mentor.dmdev.entity;
 
 import com.mentor.dmdev.enums.Genre;
+import com.mentor.dmdev.enums.Rating;
 import com.mentor.dmdev.enums.SubscriptionStatus;
 import com.mentor.dmdev.enums.SubscriptionTypes;
 import com.mentor.dmdev.util.HibernateTestUtil;
 import lombok.Cleanup;
 import org.hibernate.SessionFactory;
+import org.hibernate.graph.GraphSemantic;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -201,4 +205,207 @@ class MovieTest {
         session.getTransaction().rollback();
     }
 
+    @Test
+    void getMovieWithFeedbackWithoutEntityGraph() {
+        @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Subscription subscription = Subscription.builder()
+                .type(SubscriptionTypes.PREMIUM)
+                .status(SubscriptionStatus.ACTIVE)
+                .build();
+
+        Actor director = Actor.builder()
+                .firstname("Quentin")
+                .secondname("Tarantino")
+                .birthDate(LocalDate.of(1963, 3, 27))
+                .biography("Cool boy")
+                .build();
+
+        Movie movie = Movie.builder()
+                .name("The Hateful Eight")
+                .director(director)
+                .country("USA")
+                .genre(Genre.ACTION)
+                .subscription(subscription)
+                .releaseDate(LocalDate.of(2016, 1, 1))
+                .build();
+
+        Movie movie2 = Movie.builder()
+                .name("The Hateful Eight part2")
+                .director(director)
+                .country("USA")
+                .genre(Genre.ACTION)
+                .subscription(subscription)
+                .releaseDate(LocalDate.of(2016, 1, 1))
+                .build();
+
+        Movie movie3 = Movie.builder()
+                .name("The Hateful Eight part2")
+                .director(director)
+                .country("USA")
+                .genre(Genre.ACTION)
+                .subscription(subscription)
+                .releaseDate(LocalDate.of(2016, 1, 1))
+                .build();
+
+        var user = User.builder()
+                .username("username")
+                .firstName("firstName")
+                .secondName("secondName")
+                .password("password")
+                .email("email")
+                .subscription(subscription)
+                .build();
+
+        var feedBack1 = FeedBack.builder()
+                .movie(movie)
+                .comment("comment")
+                .rating(Rating.EXCELLENT)
+                .user(user)
+                .build();
+
+        var feedBack2 = FeedBack.builder()
+                .movie(movie)
+                .comment("comment")
+                .rating(Rating.EXCELLENT)
+                .user(user)
+                .build();
+
+        var feedBack3 = FeedBack.builder()
+                .movie(movie)
+                .comment("comment")
+                .rating(Rating.EXCELLENT)
+                .user(user)
+                .build();
+
+        movie.addFeedback(feedBack1);
+        movie2.addFeedback(feedBack2);
+        movie3.addFeedback(feedBack3);
+        user.addFeedback(feedBack1);
+        user.addFeedback(feedBack2);
+        user.addFeedback(feedBack3);
+
+        session.save(subscription);
+        session.save(director);
+        session.save(user);
+        session.save(movie);
+        session.save(movie2);
+        session.save(movie3);
+        session.flush();
+        session.clear();
+
+        List<Movie> movies = session.createQuery("select m from Movie m", Movie.class).list();
+        movies.forEach(m -> m.getFeedbacks().size());
+
+        session.getTransaction().rollback();
+    }
+
+    @Test
+    void getMovieWithFeedbackWithEntityGraph() {
+        @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Subscription subscription = Subscription.builder()
+                .type(SubscriptionTypes.PREMIUM)
+                .status(SubscriptionStatus.ACTIVE)
+                .build();
+
+        Actor director = Actor.builder()
+                .firstname("Quentin")
+                .secondname("Tarantino")
+                .birthDate(LocalDate.of(1963, 3, 27))
+                .biography("Cool boy")
+                .build();
+
+        Movie movie = Movie.builder()
+                .name("The Hateful Eight")
+                .director(director)
+                .country("USA")
+                .genre(Genre.ACTION)
+                .subscription(subscription)
+                .releaseDate(LocalDate.of(2016, 1, 1))
+                .build();
+
+        Movie movie2 = Movie.builder()
+                .name("The Hateful Eight part2")
+                .director(director)
+                .country("USA")
+                .genre(Genre.ACTION)
+                .subscription(subscription)
+                .releaseDate(LocalDate.of(2016, 1, 1))
+                .build();
+
+        Movie movie3 = Movie.builder()
+                .name("The Hateful Eight part2")
+                .director(director)
+                .country("USA")
+                .genre(Genre.ACTION)
+                .subscription(subscription)
+                .releaseDate(LocalDate.of(2016, 1, 1))
+                .build();
+
+        var user = User.builder()
+                .username("username")
+                .firstName("firstName")
+                .secondName("secondName")
+                .password("password")
+                .email("email")
+                .subscription(subscription)
+                .build();
+
+        var feedBack1 = FeedBack.builder()
+                .movie(movie)
+                .comment("comment")
+                .rating(Rating.EXCELLENT)
+                .user(user)
+                .build();
+
+        var feedBack2 = FeedBack.builder()
+                .movie(movie)
+                .comment("comment")
+                .rating(Rating.EXCELLENT)
+                .user(user)
+                .build();
+
+        var feedBack3 = FeedBack.builder()
+                .movie(movie)
+                .comment("comment")
+                .rating(Rating.EXCELLENT)
+                .user(user)
+                .build();
+
+        movie.addFeedback(feedBack1);
+        movie2.addFeedback(feedBack2);
+        movie3.addFeedback(feedBack3);
+        user.addFeedback(feedBack1);
+        user.addFeedback(feedBack2);
+        user.addFeedback(feedBack3);
+
+        session.save(subscription);
+        session.save(director);
+        session.save(user);
+        session.save(movie);
+        session.save(movie2);
+        session.save(movie3);
+
+        session.flush();
+        session.clear();
+
+        var movieGraph = session.createEntityGraph(Movie.class);
+        movieGraph.addAttributeNodes("feedbacks");
+
+        var movies = session.createQuery("select m from Movie m", Movie.class)
+                .setHint(GraphSemantic.FETCH.getJpaHintName(), movieGraph)
+                .list();
+
+        movies.forEach(m -> m.getFeedbacks().size());
+
+        session.getTransaction().rollback();
+    }
+
+    @AfterAll
+    static void clear() {
+        sessionFactory.close();
+    }
 }

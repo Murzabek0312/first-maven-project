@@ -3,6 +3,7 @@ package com.mentor.dmdev.entity;
 import com.mentor.dmdev.util.HibernateTestUtil;
 import lombok.Cleanup;
 import org.hibernate.SessionFactory;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -124,7 +125,11 @@ class ActorTest {
         assertNull(actualResult);
 
         session.getTransaction().rollback();
+    }
 
+    @AfterAll
+    static void clear() {
+        sessionFactory.close();
     }
 
 }

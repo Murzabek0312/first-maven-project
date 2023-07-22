@@ -6,6 +6,7 @@ import com.mentor.dmdev.enums.SubscriptionTypes;
 import com.mentor.dmdev.util.HibernateTestUtil;
 import lombok.Cleanup;
 import org.hibernate.SessionFactory;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -124,7 +125,7 @@ class MoviesActorTest {
         MoviesActor actualResult = session.get(MoviesActor.class, movieActorId);
 
         assertEquals(actor, actualResult.getActor());
-        assertEquals(movie, actualResult.getMovie());
+        assertEquals(movie.getId(), actualResult.getMovie().getId());
 
         session.getTransaction().rollback();
     }
@@ -195,7 +196,7 @@ class MoviesActorTest {
         MoviesActor actualResult = session.get(MoviesActor.class, movieActorId);
 
         assertEquals(newActor, actualResult.getActor());
-        assertEquals(movie, actualResult.getMovie());
+        assertEquals(movie.getId(), actualResult.getMovie().getId());
 
         session.getTransaction().rollback();
     }
@@ -263,4 +264,8 @@ class MoviesActorTest {
         session.getTransaction().rollback();
     }
 
+    @AfterAll
+    static void clear() {
+        sessionFactory.close();
+    }
 }

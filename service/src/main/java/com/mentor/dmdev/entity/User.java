@@ -49,6 +49,7 @@ public class User {
     private Subscription subscription;
 
     @ToString.Exclude
+    @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<FeedBack> feedbacks = new ArrayList<>();
 

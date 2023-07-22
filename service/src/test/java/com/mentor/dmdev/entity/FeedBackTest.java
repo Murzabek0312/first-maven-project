@@ -7,6 +7,7 @@ import com.mentor.dmdev.enums.SubscriptionTypes;
 import com.mentor.dmdev.util.HibernateTestUtil;
 import lombok.Cleanup;
 import org.hibernate.SessionFactory;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -161,7 +162,7 @@ class FeedBackTest {
 
         FeedBack actualResult = session.get(FeedBack.class, feedBackId);
 
-        assertEquals(movie, actualResult.getMovie());
+        assertEquals(movie.getId(), actualResult.getMovie().getId());
         assertEquals("comment", actualResult.getComment());
         assertEquals(Rating.EXCELLENT, actualResult.getRating());
         assertEquals(user, actualResult.getUser());
@@ -246,7 +247,7 @@ class FeedBackTest {
 
         FeedBack actualResult = session.get(FeedBack.class, feedBackId);
 
-        assertEquals(movie, actualResult.getMovie());
+        assertEquals(movie.getId(), actualResult.getMovie().getId());
         assertEquals("new Comment", actualResult.getComment());
         assertEquals(Rating.BAD, actualResult.getRating());
         assertEquals(user, actualResult.getUser());
@@ -329,4 +330,8 @@ class FeedBackTest {
         session.getTransaction().rollback();
     }
 
+    @AfterAll
+    static void clear() {
+        sessionFactory.close();
+    }
 }

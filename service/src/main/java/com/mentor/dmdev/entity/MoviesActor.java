@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Entity
 @Data
 @Builder
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "movie_actor")
@@ -32,7 +32,7 @@ public class MoviesActor {
     @JoinColumn(nullable = false)
     private Movie movie;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Actor actor;
 
