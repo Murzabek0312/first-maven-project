@@ -44,6 +44,9 @@
         <hibernate.jpamodelgen.version>5.6.15.Final</hibernate.jpamodelgen.version>
         <querydsl.version>5.0.0</querydsl.version>
         <javax.persistence-api>2.2</javax.persistence-api>
+        <hibernate-validator.version>6.0.22.Final</hibernate-validator.version>
+        <javax.el-api.version>3.0.0</javax.el-api.version>
+        <org.glassfish.javax-el>3.0.0</org.glassfish.javax-el>
     </properties>
 
     <dependencyManagement>
@@ -92,6 +95,24 @@
                 <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-jpa</artifactId>
                 <version>${querydsl.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.el</groupId>
+                <artifactId>javax.el-api</artifactId>
+                <version>${javax.el-api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>${org.glassfish.javax-el}</version>
             </dependency>
 
             <dependency>
