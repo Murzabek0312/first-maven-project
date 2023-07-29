@@ -1,5 +1,6 @@
 package com.mentor.dmdev.integration;
 
+import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.dto.ActorFilter;
 import com.mentor.dmdev.entity.Actor;
 import com.mentor.dmdev.entity.Actor_;
@@ -11,14 +12,8 @@ import com.mentor.dmdev.entity.Subscription;
 import com.mentor.dmdev.enums.Genre;
 import com.mentor.dmdev.enums.SubscriptionStatus;
 import com.mentor.dmdev.enums.SubscriptionTypes;
-import com.mentor.dmdev.util.HibernateTestUtil;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.graph.GraphSemantic;
 import org.hibernate.graph.RootGraph;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,21 +27,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CriteriaIT {
-
-    private static SessionFactory sessionFactory;
-    private static Session session;
-
-    @BeforeAll
-    static void prepare() {
-        sessionFactory = HibernateTestUtil.buildSessionFactory();
-    }
+public class CriteriaIT extends BaseIT {
 
     @BeforeEach
     void initDb() {
-        session = sessionFactory.openSession();
-        session.beginTransaction();
-
         Subscription subscription = Subscription.builder()
                 .type(SubscriptionTypes.PREMIUM)
                 .status(SubscriptionStatus.ACTIVE)
@@ -249,16 +233,5 @@ public class CriteriaIT {
         assertEquals(2, actualResult.size());
         assertEquals("NeTarantino", actualResult.get(0).getSecondname());
         assertEquals("Tarantino", actualResult.get(1).getSecondname());
-    }
-
-    @AfterEach
-    void clear() {
-        session.getTransaction().rollback();
-        session.close();
-    }
-
-    @AfterAll
-    static void clearAll() {
-        sessionFactory.close();
     }
 }

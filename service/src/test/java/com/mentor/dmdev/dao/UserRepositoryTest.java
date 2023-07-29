@@ -1,8 +1,7 @@
 package com.mentor.dmdev.dao;
 
-import com.mentor.dmdev.BaseTest;
+import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.entity.User;
-import com.mentor.dmdev.util.HibernateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,17 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class UserRepositoryTest extends BaseTest {
+class UserRepositoryTest extends BaseIT {
 
     private static UserRepository userRepository;
     private static Long userId;
 
     @BeforeEach
     void prepare() {
-        session = HibernateUtil.getSessionByProxy(sessionFactory);
-        userRepository = new UserRepository(session);
-        session.beginTransaction();
-
+        userRepository = context.getBean(UserRepository.class);
         var user = User.builder()
                 .username("username1")
                 .firstName("firstName1")

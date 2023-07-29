@@ -1,6 +1,6 @@
 package com.mentor.dmdev.dao;
 
-import com.mentor.dmdev.BaseTest;
+import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.entity.Actor;
 import com.mentor.dmdev.entity.Movie;
 import com.mentor.dmdev.entity.MoviesActor;
@@ -19,15 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class MovieActorRepositoryTest extends BaseTest {
+class MovieActorRepositoryTest extends BaseIT {
 
     private static MovieActorRepository movieActorRepository;
     private static Long movieActorId;
 
     @BeforeEach
     void prepare() {
-        movieActorRepository = new MovieActorRepository(session);
-        session.beginTransaction();
+        movieActorRepository = context.getBean(MovieActorRepository.class);
         MoviesActor movieActor = createMovieActor("Bruce", "Willis");
         movieActorId = (long) session.save(movieActor);
     }
