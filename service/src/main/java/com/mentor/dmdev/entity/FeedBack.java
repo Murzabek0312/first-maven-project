@@ -26,7 +26,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Entity
 @Table(name = "feedback")
-public class FeedBack {
+public class FeedBack implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

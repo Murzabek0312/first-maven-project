@@ -32,7 +32,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "movie")
-public class Movie {
+public class Movie implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
