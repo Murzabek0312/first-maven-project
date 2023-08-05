@@ -1,5 +1,6 @@
 package com.mentor.dmdev.integration;
 
+import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.dao.QPredicate;
 import com.mentor.dmdev.dto.ActorFilter;
 import com.mentor.dmdev.entity.Actor;
@@ -9,16 +10,10 @@ import com.mentor.dmdev.entity.Subscription;
 import com.mentor.dmdev.enums.Genre;
 import com.mentor.dmdev.enums.SubscriptionStatus;
 import com.mentor.dmdev.enums.SubscriptionTypes;
-import com.mentor.dmdev.util.HibernateTestUtil;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.graph.GraphSemantic;
 import org.hibernate.graph.RootGraph;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,20 +25,10 @@ import static com.mentor.dmdev.entity.QMovie.movie;
 import static com.mentor.dmdev.entity.QMoviesActor.moviesActor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class QueryDslIT {
-    private static SessionFactory sessionFactory;
-    private static Session session;
-
-    @BeforeAll
-    static void prepare() {
-        sessionFactory = HibernateTestUtil.buildSessionFactory();
-    }
+public class QueryDslIT extends BaseIT {
 
     @BeforeEach
     void initDb() {
-        session = sessionFactory.openSession();
-        session.beginTransaction();
-
         Subscription subscription = Subscription.builder()
                 .type(SubscriptionTypes.PREMIUM)
                 .status(SubscriptionStatus.ACTIVE)
@@ -222,16 +207,5 @@ public class QueryDslIT {
         assertEquals(2, actualResult.size());
         assertEquals("NeTarantino", actualResult.get(0).getSecondname());
         assertEquals("Tarantino", actualResult.get(1).getSecondname());
-    }
-
-    @AfterEach
-    void clear() {
-        session.getTransaction().rollback();
-        session.close();
-    }
-
-    @AfterAll
-    static void clearAll() {
-        sessionFactory.close();
     }
 }

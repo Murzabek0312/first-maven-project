@@ -1,6 +1,6 @@
 package com.mentor.dmdev.dao;
 
-import com.mentor.dmdev.BaseTest;
+import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.entity.Subscription;
 import com.mentor.dmdev.enums.SubscriptionStatus;
 import com.mentor.dmdev.enums.SubscriptionTypes;
@@ -14,16 +14,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SubscriptionRepositoryTest extends BaseTest {
+class SubscriptionRepositoryTest extends BaseIT {
 
     private static SubscriptionRepository subscriptionRepository;
     private static Long subscriptionId;
 
     @BeforeEach
     void prepare() {
-        subscriptionRepository = new SubscriptionRepository(session);
-        session.beginTransaction();
-
+        subscriptionRepository = context.getBean(SubscriptionRepository.class);
         var subscription = Subscription.builder()
                 .type(SubscriptionTypes.PREMIUM)
                 .status(SubscriptionStatus.ACTIVE)

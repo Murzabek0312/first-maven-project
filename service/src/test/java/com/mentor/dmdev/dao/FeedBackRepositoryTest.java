@@ -1,6 +1,6 @@
 package com.mentor.dmdev.dao;
 
-import com.mentor.dmdev.BaseTest;
+import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.entity.Actor;
 import com.mentor.dmdev.entity.FeedBack;
 import com.mentor.dmdev.entity.Movie;
@@ -22,15 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class FeedBackRepositoryTest extends BaseTest {
+class FeedBackRepositoryTest extends BaseIT {
 
     private static FeedBackRepository feedBackRepository;
     private static Long feedbackId;
 
     @BeforeEach
     void prepare() {
-        feedBackRepository = new FeedBackRepository(session);
-        session.beginTransaction();
+        feedBackRepository = context.getBean(FeedBackRepository.class);
         FeedBack feedback = getFeedback("comment", Rating.EXCELLENT, "email");
         feedbackId = (long) session.save(feedback);
     }
