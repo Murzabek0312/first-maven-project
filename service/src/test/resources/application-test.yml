@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    username: test
+    password: test
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        hbm2ddl:
+          auto: create
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
