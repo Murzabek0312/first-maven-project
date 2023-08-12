@@ -2,7 +2,7 @@ package com.mentor.dmdev.dao;
 
 import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.entity.User;
-import org.junit.jupiter.api.BeforeEach;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,39 +12,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@RequiredArgsConstructor
 class UserRepositoryTest extends BaseIT {
 
-    private static UserRepository userRepository;
-    private static Long userId;
+    private static final Long USER_ID = 1L;
 
-    @BeforeEach
-    void prepare() {
-        userRepository = context.getBean(UserRepository.class);
-        var user = User.builder()
-                .username("username1")
-                .firstName("firstName1")
-                .secondName("secondName1")
-                .password("password1")
-                .email("email1")
-                .build();
-
-        userId = (long) session.save(user);
-    }
+    private final UserRepository userRepository;
 
     @Test
     void shouldReturnUser() {
-        Optional<User> actualResult = userRepository.findById(userId);
+        Optional<User> actualResult = userRepository.findById(USER_ID);
         assertTrue(actualResult.isPresent());
-        assertEquals("username1", actualResult.get().getUsername());
-        assertEquals("firstName1", actualResult.get().getFirstName());
-        assertEquals("secondName1", actualResult.get().getSecondName());
-        assertEquals("password1", actualResult.get().getPassword());
-        assertEquals("email1", actualResult.get().getEmail());
+        assertEquals("username", actualResult.get().getUsername());
+        assertEquals("firstName", actualResult.get().getFirstName());
+        assertEquals("secondName", actualResult.get().getSecondName());
+        assertEquals("password", actualResult.get().getPassword());
+        assertEquals("email", actualResult.get().getEmail());
     }
 
     @Test
     void shouldUpdateUser() {
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(USER_ID).get();
         user.setFirstName("new firstname");
         user.setSecondName("new secondname");
 
@@ -52,46 +40,25 @@ class UserRepositoryTest extends BaseIT {
         session.flush();
         session.clear();
 
-        Optional<User> actualResult = userRepository.findById(userId);
+        Optional<User> actualResult = userRepository.findById(USER_ID);
         assertTrue(actualResult.isPresent());
         assertEquals("new firstname", actualResult.get().getFirstName());
         assertEquals("new secondname", actualResult.get().getSecondName());
-        assertEquals("password1", actualResult.get().getPassword());
-        assertEquals("email1", actualResult.get().getEmail());
-        assertEquals("username1", actualResult.get().getUsername());
+        assertEquals("password", actualResult.get().getPassword());
+        assertEquals("email", actualResult.get().getEmail());
+        assertEquals("username", actualResult.get().getUsername());
     }
 
     @Test
     void shouldDeleteUser() {
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(USER_ID).get();
         userRepository.delete(user);
-        Optional<User> actualResult = userRepository.findById(userId);
+        Optional<User> actualResult = userRepository.findById(USER_ID);
         assertFalse(actualResult.isPresent());
     }
 
     @Test
     void shouldReturnAllUser() {
-        var user2 = User.builder()
-                .username("username2")
-                .firstName("firstName2")
-                .secondName("secondName2")
-                .password("password2")
-                .email("email2")
-                .build();
-        var user3 = User.builder()
-                .username("username3")
-                .firstName("firstName3")
-                .secondName("secondName3")
-                .password("password3")
-                .email("email3")
-                .build();
-
-        userRepository.save(user2);
-        userRepository.save(user3);
-
-        session.flush();
-        session.clear();
-
         List<User> actaulResult = userRepository.findAll();
         assertEquals(3, actaulResult.size());
     }

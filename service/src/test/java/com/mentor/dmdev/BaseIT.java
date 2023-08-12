@@ -1,37 +1,34 @@
 package com.mentor.dmdev;
 
-import com.mentor.dmdev.configuration.TestApplicationConfiguration;
 import org.hibernate.Session;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.PostgreSQLContainer;
 
+@Transactional
+@SpringBootTest
+@ActiveProfiles("test")
+@Sql("classpath:prepareIntegrationTest.sql")
 public abstract class BaseIT {
 
-    protected static AnnotationConfigApplicationContext context;
-    protected static Session session;
+    private static final PostgreSQLContainer<?> CONTAINER = new PostgreSQLContainer<>("postgres:13");
+
+    @Autowired
+    protected Session session;
 
     @BeforeAll
-    static void prepareAll() {
-        context = new AnnotationConfigApplicationContext(TestApplicationConfiguration.class);
-        session = context.getBean(Session.class);
+    static void runContainer() {
+        CONTAINER.start();
     }
 
-    @BeforeEach
-    void prepareEach() {
-        session.beginTransaction();
-    }
-
-    @AfterEach
-    void clear() {
-        session.getTransaction().rollback();
-        session.close();
-    }
-
-    @AfterAll
-    static void clearAll() {
-        context.close();
+    @DynamicPropertySource
+    static void postgresProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", CONTAINER::getJdbcUrl);
     }
 }
