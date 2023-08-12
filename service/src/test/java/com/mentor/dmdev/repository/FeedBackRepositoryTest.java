@@ -1,4 +1,4 @@
-package com.mentor.dmdev.dao;
+package com.mentor.dmdev.repository;
 
 import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.entity.FeedBack;
@@ -33,9 +33,9 @@ class FeedBackRepositoryTest extends BaseIT {
         FeedBack feedBack = feedBackRepository.findById(FEEDBACK_ID).get();
         feedBack.setComment("new Comment");
         feedBack.setRating(Rating.BAD);
-        feedBackRepository.update(feedBack);
-        session.flush();
-        session.clear();
+        feedBackRepository.save(feedBack);
+        entityManager.flush();
+        entityManager.clear();
         Optional<FeedBack> actualResult = feedBackRepository.findById(FEEDBACK_ID);
         assertTrue(actualResult.isPresent());
         assertEquals("new Comment", actualResult.get().getComment());

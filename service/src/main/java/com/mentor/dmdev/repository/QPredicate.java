@@ -1,4 +1,4 @@
-package com.mentor.dmdev.dao;
+package com.mentor.dmdev.repository;
 
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;

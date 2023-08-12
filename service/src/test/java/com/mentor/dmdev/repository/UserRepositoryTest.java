@@ -1,4 +1,4 @@
-package com.mentor.dmdev.dao;
+package com.mentor.dmdev.repository;
 
 import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.entity.User;
@@ -36,9 +36,9 @@ class UserRepositoryTest extends BaseIT {
         user.setFirstName("new firstname");
         user.setSecondName("new secondname");
 
-        userRepository.update(user);
-        session.flush();
-        session.clear();
+        userRepository.save(user);
+        entityManager.flush();
+        entityManager.clear();
 
         Optional<User> actualResult = userRepository.findById(USER_ID);
         assertTrue(actualResult.isPresent());

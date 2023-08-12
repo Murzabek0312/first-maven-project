@@ -1,15 +1,15 @@
 package com.mentor.dmdev.integration;
 
 import com.mentor.dmdev.BaseIT;
-import com.mentor.dmdev.dao.QPredicate;
 import com.mentor.dmdev.dto.ActorFilter;
 import com.mentor.dmdev.entity.Actor;
+import com.mentor.dmdev.repository.QPredicate;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.hibernate.graph.GraphSemantic;
-import org.hibernate.graph.RootGraph;
 import org.junit.jupiter.api.Test;
 
+import javax.persistence.EntityGraph;
 import java.util.List;
 
 import static com.mentor.dmdev.entity.QActor.actor;
@@ -21,7 +21,7 @@ public class QueryDslIT extends BaseIT {
 
     @Test
     void findAllActors() {
-        List<Actor> actualResult = new JPAQuery<Actor>(session)
+        List<Actor> actualResult = new JPAQuery<Actor>(entityManager)
                 .select(actor)
                 .from(actor)
                 .fetch();
@@ -33,7 +33,7 @@ public class QueryDslIT extends BaseIT {
     void findActorByFirstname() {
         var firstname = "Petr";
 
-        List<Actor> actualResult = new JPAQuery<Actor>(session)
+        List<Actor> actualResult = new JPAQuery<Actor>(entityManager)
                 .select(actor)
                 .from(actor)
                 .where(actor.firstname.eq(firstname))
@@ -45,7 +45,7 @@ public class QueryDslIT extends BaseIT {
     @Test
     void findLimitedActorsOrderByBirthday() {
         var limit = 2;
-        List<Actor> actualResult = new JPAQuery<Actor>(session)
+        List<Actor> actualResult = new JPAQuery<Actor>(entityManager)
                 .select(actor)
                 .from(actor)
                 .limit(limit)
@@ -61,7 +61,7 @@ public class QueryDslIT extends BaseIT {
     void findAllActorsByMovie() {
         var movieName = "The Hateful Eight";
 
-        List<Actor> actualResult = new JPAQuery<Actor>(session)
+        List<Actor> actualResult = new JPAQuery<Actor>(entityManager)
                 .select(actor)
                 .from(actor)
                 .join(actor.moviesActors, moviesActor)
@@ -86,7 +86,7 @@ public class QueryDslIT extends BaseIT {
                 .add(filter.getSecondname(), actor.secondname::eq)
                 .buildOr();
 
-        List<Actor> actualResult = new JPAQuery<Actor>(session)
+        List<Actor> actualResult = new JPAQuery<Actor>(entityManager)
                 .select(actor)
                 .from(actor)
                 .where(predicate)
@@ -111,10 +111,10 @@ public class QueryDslIT extends BaseIT {
                 .add(filter.getSecondname(), actor.secondname::eq)
                 .buildOr();
 
-        RootGraph<Actor> actorGraph = session.createEntityGraph(Actor.class);
+        EntityGraph<Actor> actorGraph = entityManager.createEntityGraph(Actor.class);
         actorGraph.addAttributeNodes("moviesActors");
 
-        List<Actor> actualResult = new JPAQuery<Actor>(session)
+        List<Actor> actualResult = new JPAQuery<Actor>(entityManager)
                 .select(actor)
                 .from(actor)
                 .where(predicate)

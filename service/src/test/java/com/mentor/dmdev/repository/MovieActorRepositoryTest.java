@@ -1,4 +1,4 @@
-package com.mentor.dmdev.dao;
+package com.mentor.dmdev.repository;
 
 import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.entity.Movie;
@@ -34,9 +34,9 @@ class MovieActorRepositoryTest extends BaseIT {
         MoviesActor moviesActor = movieActorRepository.findById(MOVIE_ACTOR_ID).get();
         Movie movie = movieRepository.findById(2L).get();
         moviesActor.setMovie(movie);
-        movieActorRepository.update(moviesActor);
-        session.flush();
-        session.clear();
+        movieActorRepository.save(moviesActor);
+        entityManager.flush();
+        entityManager.clear();
 
         Optional<MoviesActor> actualResult = movieActorRepository.findById(MOVIE_ACTOR_ID);
 

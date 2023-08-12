@@ -1,4 +1,4 @@
-package com.mentor.dmdev.dao;
+package com.mentor.dmdev.repository;
 
 import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.entity.Actor;
@@ -37,9 +37,9 @@ class ActorRepositoryTest extends BaseIT {
         actor.setFirstname("Will");
         actor.setSecondname("Smith");
         actor.setBiography("Good Actor");
-        session.update(actor);
-        session.flush();
-        session.clear();
+        entityManager.merge(actor);
+        entityManager.flush();
+        entityManager.clear();
         Optional<Actor> actualResult = actorRepository.findById(ACTOR_ID);
         assertTrue(actualResult.isPresent());
         assertEquals("Will", actualResult.get().getFirstname());
