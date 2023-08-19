@@ -1,6 +1,5 @@
 package com.mentor.dmdev;
 
-import org.hibernate.Session;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +10,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+import javax.persistence.EntityManager;
+
 @Transactional
 @SpringBootTest
 @ActiveProfiles("test")
@@ -20,7 +21,7 @@ public abstract class BaseIT {
     private static final PostgreSQLContainer<?> CONTAINER = new PostgreSQLContainer<>("postgres:13");
 
     @Autowired
-    protected Session session;
+    protected EntityManager entityManager;
 
     @BeforeAll
     static void runContainer() {

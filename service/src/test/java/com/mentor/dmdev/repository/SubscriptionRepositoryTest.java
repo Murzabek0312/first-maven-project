@@ -1,4 +1,4 @@
-package com.mentor.dmdev.dao;
+package com.mentor.dmdev.repository;
 
 import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.entity.Subscription;
@@ -36,9 +36,9 @@ class SubscriptionRepositoryTest extends BaseIT {
         subscription.setStatus(SubscriptionStatus.EXPIRED);
         subscription.setType(SubscriptionTypes.STANDART);
 
-        subscriptionRepository.update(subscription);
-        session.flush();
-        session.clear();
+        subscriptionRepository.save(subscription);
+        entityManager.flush();
+        entityManager.clear();
 
         Optional<Subscription> actualResult = subscriptionRepository.findById(SUBSCRIPTION_ID);
         assertTrue(actualResult.isPresent());

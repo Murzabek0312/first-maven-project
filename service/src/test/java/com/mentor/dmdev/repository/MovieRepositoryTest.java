@@ -1,4 +1,4 @@
-package com.mentor.dmdev.dao;
+package com.mentor.dmdev.repository;
 
 import com.mentor.dmdev.BaseIT;
 import com.mentor.dmdev.entity.Movie;
@@ -33,9 +33,9 @@ class MovieRepositoryTest extends BaseIT {
         Movie movie = movieRepository.findById(MOVIE_ID).get();
         movie.setName("The Pursuit of Happyness");
         movie.setGenre(Genre.DRAMA);
-        movieRepository.update(movie);
-        session.flush();
-        session.clear();
+        movieRepository.save(movie);
+        entityManager.flush();
+        entityManager.clear();
 
         Optional<Movie> actualResult = movieRepository.findById(MOVIE_ID);
         assertTrue(actualResult.isPresent());
