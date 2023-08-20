@@ -1,4 +1,4 @@
-package com.mentor.dmdev.dto;
+package com.mentor.dmdev.dto.filters;
 
 import lombok.Builder;
 import lombok.Value;
