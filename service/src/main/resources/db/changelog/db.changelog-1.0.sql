@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS users
     username        VARCHAR(128) NOT NULL,
     first_name      VARCHAR(128) NOT NULL,
     second_name     VARCHAR(128),
-    password        VARCHAR(128) NOT NULL,
+    password        VARCHAR(128),
     email           VARCHAR(128) NOT NULL UNIQUE,
     subscription_id BIGINT REFERENCES subscription (id)
 );

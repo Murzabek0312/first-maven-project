@@ -1,7 +1,7 @@
 package com.mentor.dmdev.integration;
 
 import com.mentor.dmdev.BaseIT;
-import com.mentor.dmdev.dto.ActorFilter;
+import com.mentor.dmdev.dto.filters.ActorFilter;
 import com.mentor.dmdev.entity.Actor;
 import com.mentor.dmdev.entity.Actor_;
 import com.mentor.dmdev.entity.Movie_;

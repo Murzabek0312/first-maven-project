@@ -1,9 +1,9 @@
 package com.mentor.dmdev.integration;
 
 import com.mentor.dmdev.BaseIT;
-import com.mentor.dmdev.dto.ActorFilter;
+import com.mentor.dmdev.dto.filters.ActorFilter;
 import com.mentor.dmdev.entity.Actor;
-import com.mentor.dmdev.repository.QPredicate;
+import com.mentor.dmdev.repository.predicates.QPredicate;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.hibernate.graph.GraphSemantic;

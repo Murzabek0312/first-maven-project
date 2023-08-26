@@ -43,6 +43,7 @@
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <maven-wrapper-plugin.version>3.1.0</maven-wrapper-plugin.version>
         <hibernate.jpamodelgen.version>5.6.15.Final</hibernate.jpamodelgen.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     </properties>
 
     <dependencyManagement>
@@ -52,6 +53,12 @@
                 <artifactId>postgresql</artifactId>
                 <version>${org.testcontainers.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${org.mapstruct.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -70,12 +77,18 @@
                             <annotationProcessor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor
                             </annotationProcessor>
                             <annotationProcessor>com.querydsl.apt.jpa.JPAAnnotationProcessor</annotationProcessor>
+                            <annotationProcessor>org.mapstruct.ap.MappingProcessor</annotationProcessor>
                         </annotationProcessors>
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.projectlombok</groupId>
                                 <artifactId>lombok</artifactId>
                                 <version>${lombok.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${org.mapstruct.version}</version>
                             </path>
                             <path>
                                 <groupId>com.querydsl</groupId>

@@ -10,6 +10,7 @@ VALUES (1, 'James', 'Bond', '2012-5-13', 'Agent007'),
 INSERT INTO subscription(id, status, type)
 VALUES (1, 'ACTIVE', 'PREMIUM'),
        (2, 'EXPIRED', 'STANDART');
+SELECT SETVAL('subscription_id_seq', (SELECT MAX(id) FROM subscription));
 
 INSERT INTO movie(id, name, director_id, country, genre, subscription_id, release_date)
 VALUES (1, 'The Hateful Eight', 3, 'USA', 'ACTION', 1, '2016-1-1'),
@@ -25,6 +26,7 @@ INSERT INTO users(id, username, first_name, second_name, password, email, subscr
 VALUES (1, 'username', 'firstName', 'secondName', 'password', 'email', 1),
        (2, 'username2', 'firstName2', 'secondName2', 'password2', 'email2', 1),
        (3, 'username3', 'firstName3', 'secondName3', 'password3', 'email3', 1);
+SELECT SETVAL('users_id_seq', (SELECT MAX(id) FROM users));
 
 INSERT INTO feedback(id, movie_id, comment, rating, user_id)
 VALUES (1, 2, 'comment', 'EXCELLENT', 2),
