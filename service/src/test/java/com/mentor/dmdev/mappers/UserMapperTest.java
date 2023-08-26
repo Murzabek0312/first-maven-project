@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -96,7 +97,9 @@ class UserMapperTest {
         var firstname = "firstname";
         var secondName = "secondName";
         var email = "email";
+        var imageName = "imageName";
         var subscription = mock(Subscription.class);
+        var image = mock(MultipartFile.class);
 
         var userCreateEditDto = mock(UserCreateEditDto.class);
 
@@ -104,6 +107,8 @@ class UserMapperTest {
         doReturn(firstname).when(userCreateEditDto).getFirstName();
         doReturn(secondName).when(userCreateEditDto).getSecondName();
         doReturn(email).when(userCreateEditDto).getEmail();
+        doReturn(image).when(userCreateEditDto).getImage();
+        doReturn(imageName).when(image).getOriginalFilename();
 
         //When:
         var actualResult = mapper.map(userCreateEditDto, subscription);
@@ -113,6 +118,7 @@ class UserMapperTest {
         assertEquals(firstname, actualResult.getFirstName());
         assertEquals(secondName, actualResult.getSecondName());
         assertEquals(email, actualResult.getEmail());
+        assertEquals(imageName, actualResult.getImage());
     }
 
     @Test
@@ -123,9 +129,11 @@ class UserMapperTest {
         var firstname = "firstname";
         var secondName = "secondName";
         var email = "email";
-        var subscription = mock(Subscription.class);
+        var originalFileName = "originalFileName";
 
+        var subscription = mock(Subscription.class);
         var user = mock(User.class);
+        var multipartFile = mock(MultipartFile.class);
 
         var userCreateEditDto = mock(UserCreateEditDto.class);
 
@@ -135,6 +143,8 @@ class UserMapperTest {
         doReturn(email).when(userCreateEditDto).getEmail();
         doReturn(subscription).when(user).getSubscription();
         doReturn(id).when(user).getId();
+        doReturn(multipartFile).when(userCreateEditDto).getImage();
+        doReturn(originalFileName).when(multipartFile).getOriginalFilename();
 
         //When:
         var actualResult = mapper.map(userCreateEditDto, user);
@@ -146,5 +156,6 @@ class UserMapperTest {
         assertEquals(email, actualResult.getEmail());
         assertEquals(subscription, actualResult.getSubscription());
         assertEquals(id, actualResult.getId());
+        assertEquals(originalFileName, actualResult.getImage());
     }
 }

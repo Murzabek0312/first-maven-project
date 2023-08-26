@@ -20,6 +20,7 @@ public interface UserMapper {
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "feedbacks", ignore = true)
     @Mapping(target = "subscription", source = "subscription")
+    @Mapping(target = "image", expression = "java(source.getImage().getOriginalFilename())")
     User map(UserCreateEditDto source, Subscription subscription);
 
     @Mapping(target = "id", source = "user.id")
@@ -28,5 +29,6 @@ public interface UserMapper {
     @Mapping(target = "secondName", source = "source.secondName")
     @Mapping(target = "password", source = "user.password")
     @Mapping(target = "email", source = "source.email")
+    @Mapping(target = "image", expression = "java(java.util.Objects.requireNonNull(source.getImage().getOriginalFilename()).isEmpty() ? user.getImage() : source.getImage().getOriginalFilename())")
     User map(UserCreateEditDto source, User user);
 }

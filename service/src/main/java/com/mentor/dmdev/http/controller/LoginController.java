@@ -1,4 +1,4 @@
-package com.mentor.dmdev.controller;
+package com.mentor.dmdev.http.controller;
 
 import com.mentor.dmdev.dto.LoginDto;
 import org.springframework.stereotype.Controller;

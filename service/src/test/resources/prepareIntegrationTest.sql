@@ -17,6 +17,7 @@ VALUES (1, 'The Hateful Eight', 3, 'USA', 'ACTION', 1, '2016-1-1'),
        (2, 'movieName', 3, 'USA', 'TRILLER', 1, '2022-2-12'),
        (3, 'The Pursuit of Happyness', 3, 'USA', 'DRAMA', 1, '2016-1-1'),
        (4, 'Gone with the Wind', 3, 'USA', 'DRAMA', 1, '2016-1-1');
+SELECT SETVAL('movie_id_seq', (SELECT MAX(id) FROM movie));
 
 INSERT INTO movie_actor(id, actor_id, movie_id)
 VALUES (1, 4, 1),

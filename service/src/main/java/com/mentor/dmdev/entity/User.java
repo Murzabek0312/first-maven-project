@@ -46,6 +46,9 @@ public class User implements BaseEntity<Long> {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column
+    private String image;
+
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     private Subscription subscription;
 

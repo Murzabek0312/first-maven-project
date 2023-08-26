@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,7 @@ public class UserCreateEditDto {
     @Size(min = 3, max = 64)
     private String username;
 
-    @NotNull()
+    @NotNull
     @Size(min = 3, max = 64)
     private String firstName;
 
@@ -30,4 +31,6 @@ public class UserCreateEditDto {
     @NotNull
     @Email(message = "Некорректный формат электронной почты")
     private String email;
+
+    private MultipartFile image;
 }
