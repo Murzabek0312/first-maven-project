@@ -18,6 +18,7 @@ public class UserReadDto {
     private String secondName;
     private String password;
     private String email;
+    private String image;
     private SubscriptionReadDto subscription;
     private List<FeedBackReadDto> feedbacks = new ArrayList<>();
 }

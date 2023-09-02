@@ -19,8 +19,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,6 +46,9 @@ class UserServiceTest {
 
     @Mock
     private UserMapper userMapper;
+
+    @Mock
+    private ImageService imageService;
 
     @Captor
     private ArgumentCaptor<User> userArgumentCaptor;
@@ -117,23 +122,28 @@ class UserServiceTest {
         var savedUser = mock(User.class);
         var userReadDto = mock(UserReadDto.class);
         Subscription subscription = mock(Subscription.class);
+        var multipartFile = mock(MultipartFile.class);
+        var originalName = "originalName";
 
         doReturn(user).when(userMapper).map(userCreateEditDto, subscription);
         doReturn(savedUser).when(userRepository).save(user);
         doReturn(userReadDto).when(userMapper).map(savedUser);
         doReturn(subscription).when(subscriptionService).createDefaultSubscription();
+        doReturn(multipartFile).when(userCreateEditDto).getImage();
+        doReturn(originalName).when(multipartFile).getOriginalFilename();
 
         // When:
         userService.create(userCreateEditDto);
 
         // Then:
+        verify(imageService).upload(eq(originalName), any());
         verify(userMapper).map(userCreateEditDto, subscription);
         verify(userRepository).save(userArgumentCaptor.capture());
         assertEquals(user, userArgumentCaptor.getValue());
     }
 
     @Test
-    void shouldUpdateUser() {
+    void shouldUpdateUser() throws IOException {
         // Given:
         var id = 123L;
         var subscriptionName = SubscriptionTypes.PREMIUM;
@@ -144,12 +154,14 @@ class UserServiceTest {
         var updatedUser = mock(User.class);
         var subscription = mock(Subscription.class);
         var userReadDto = mock(UserReadDto.class);
+        var multipartFile = mock(MultipartFile.class);
 
         doReturn(Optional.of(user)).when(userRepository).findById(id);
         doReturn(subscription).when(user).getSubscription();
         doReturn(mappedUser).when(userMapper).map(userCreateEditDto, user);
         doReturn(updatedUser).when(userRepository).saveAndFlush(mappedUser);
         doReturn(userReadDto).when(userMapper).map(updatedUser);
+        doReturn(multipartFile).when(userCreateEditDto).getImage();
 
         // When:
         userService.update(id, userCreateEditDto, subscriptionName);
@@ -158,6 +170,8 @@ class UserServiceTest {
         verify(subscription).setType(SubscriptionTypes.PREMIUM);
         verify(user).setSubscription(subscription);
         verify(userMapper).map(updatedUser);
+        verify(multipartFile).getOriginalFilename();
+        verify(multipartFile).getInputStream();
     }
 
     @Test

@@ -44,6 +44,7 @@
         <maven-wrapper-plugin.version>3.1.0</maven-wrapper-plugin.version>
         <hibernate.jpamodelgen.version>5.6.15.Final</hibernate.jpamodelgen.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+        <springdoc-openapi-ui.version>1.7.0</springdoc-openapi-ui.version>
     </properties>
 
     <dependencyManagement>
@@ -60,6 +61,13 @@
                 <artifactId>mapstruct</artifactId>
                 <version>${org.mapstruct.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc-openapi-ui.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

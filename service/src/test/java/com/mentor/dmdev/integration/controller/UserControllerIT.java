@@ -1,16 +1,23 @@
 package com.mentor.dmdev.integration.controller;
 
 import com.mentor.dmdev.BaseIT;
+import com.mentor.dmdev.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.mentor.dmdev.dto.UserCreateEditDto.Fields.email;
 import static com.mentor.dmdev.dto.UserCreateEditDto.Fields.firstName;
+import static com.mentor.dmdev.dto.UserCreateEditDto.Fields.image;
 import static com.mentor.dmdev.dto.UserCreateEditDto.Fields.secondName;
 import static com.mentor.dmdev.dto.UserCreateEditDto.Fields.username;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -23,6 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerIT extends BaseIT {
 
     private static final Long USER_ID = 1L;
+
+    @MockBean
+    private ImageService imageService;
 
     @Test
     void registration() throws Exception {
@@ -74,7 +84,12 @@ class UserControllerIT extends BaseIT {
 
     @Test
     void update() throws Exception {
-        mockMvc.perform(post("/users/" + USER_ID + "/update")
+        doNothing().when(imageService).upload(any(String.class), any());
+        var multipartFile = new MockMultipartFile(
+                "name", "some-way", "content", "inputStream".getBytes());
+
+        mockMvc.perform(multipart("/users/" + USER_ID + "/update")
+                .file(image, multipartFile.getBytes())
                 .param("subscriptionName", "PREMIUM")
                 .param(username, "username")
                 .param(firstName, "firstName")

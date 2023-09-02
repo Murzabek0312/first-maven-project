@@ -1,4 +1,4 @@
-package com.mentor.dmdev.controller;
+package com.mentor.dmdev.http.controller;
 
 import com.mentor.dmdev.dto.UserCreateEditDto;
 import com.mentor.dmdev.dto.UserReadDto;
@@ -69,8 +69,13 @@ public class UserController {
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id,
                          @RequestParam("subscriptionName") SubscriptionTypes subscriptionName,
-                         UserCreateEditDto userCreateEditDto) {
-
+                         @Validated UserCreateEditDto userCreateEditDto,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "redirect:/users/" + id;
+        }
         return "redirect:/users/" + userService.update(id, userCreateEditDto, subscriptionName).getId();
     }
 

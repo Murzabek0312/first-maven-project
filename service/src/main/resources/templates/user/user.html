@@ -5,7 +5,8 @@
     <title>User</title>
 </head>
 <body>
-<form th:action="@{/users/{userId}/update(userId=${user.id})}" method="post" th:object="${user}">
+<form th:action="@{/users/{userId}/update(userId=${user.id})}" enctype="multipart/form-data" method="post"
+      th:object="${user}">
     <label for="username">Username:
         <input id="username" type="text" name="username" th:value="*{username}">
     </label><br>
@@ -17,7 +18,11 @@
     </label><br>
     <label for="email">Email:
         <input id="email" type="text" name="email" th:value="*{email}">
-    </label><br><br>
+    </label><br>
+    <div th:if="${user.image}">
+        <img th:src="@{/api/v1/users/{userId}/avatar(userId=${user.id})}" alt="User image">
+    </div>
+    <br>
     <p2>Subscriptions:</p2>
     <div th:each="subscription : ${subscriptions}">
         <input th:id="${subscription}" type="radio" name="subscriptionName" th:value="${subscription.name()}"
@@ -31,11 +36,18 @@
         <br>
     </div>
     <br>
+    <label for="image">Image:
+        <input id="image" type="file" name="image">
+    </label><br>
+
     <button type="submit">Update</button>
 </form>
 <br>
 <form th:action="@{/users/{userId}/delete(userId=${user.id})}" method="post">
     <button type="submit">Remove</button>
 </form>
+<div th:if="${errors}">
+    <p style="color: red" th:each="error: ${errors}" th:text="${error.defaultMessage}">ErrorMessage</p>
+</div>
 </body>
 </html>
