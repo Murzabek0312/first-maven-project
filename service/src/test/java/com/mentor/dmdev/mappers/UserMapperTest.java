@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -28,6 +29,9 @@ class UserMapperTest {
 
     @Mock
     private FeedbackMapper feedbackMapper;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserMapperImpl mapper;
@@ -98,6 +102,8 @@ class UserMapperTest {
         var secondName = "secondName";
         var email = "email";
         var imageName = "imageName";
+        var rawPassword = "rawPassword";
+        var encodePassword = "encodePassword";
         var subscription = mock(Subscription.class);
         var image = mock(MultipartFile.class);
 
@@ -109,6 +115,8 @@ class UserMapperTest {
         doReturn(email).when(userCreateEditDto).getEmail();
         doReturn(image).when(userCreateEditDto).getImage();
         doReturn(imageName).when(image).getOriginalFilename();
+        doReturn(rawPassword).when(userCreateEditDto).getRawPassword();
+        doReturn(encodePassword).when(passwordEncoder).encode(rawPassword);
 
         //When:
         var actualResult = mapper.map(userCreateEditDto, subscription);
@@ -119,6 +127,7 @@ class UserMapperTest {
         assertEquals(secondName, actualResult.getSecondName());
         assertEquals(email, actualResult.getEmail());
         assertEquals(imageName, actualResult.getImage());
+        assertEquals(encodePassword, actualResult.getPassword());
     }
 
     @Test

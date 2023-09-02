@@ -24,9 +24,9 @@ VALUES (1, 4, 1),
        (2, 5, 1);
 
 INSERT INTO users(id, username, first_name, second_name, password, email, subscription_id)
-VALUES (1, 'username', 'firstName', 'secondName', 'password', 'email', 1),
-       (2, 'username2', 'firstName2', 'secondName2', 'password2', 'email2', 1),
-       (3, 'username3', 'firstName3', 'secondName3', 'password3', 'email3', 1);
+VALUES (1, 'username', 'firstName', 'secondName', '{noop}password', 'email', 1),
+       (2, 'username2', 'firstName2', 'secondName2', '{noop}password2', 'email2', 1),
+       (3, 'username3', 'firstName3', 'secondName3', '{noop}password3', 'email3', 1);
 SELECT SETVAL('users_id_seq', (SELECT MAX(id) FROM users));
 
 INSERT INTO feedback(id, movie_id, comment, rating, user_id)

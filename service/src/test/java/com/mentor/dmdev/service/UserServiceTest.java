@@ -1,5 +1,6 @@
 package com.mentor.dmdev.service;
 
+import com.mentor.dmdev.dto.Role;
 import com.mentor.dmdev.dto.UserCreateEditDto;
 import com.mentor.dmdev.dto.UserReadDto;
 import com.mentor.dmdev.dto.filters.UserFilter;
@@ -19,6 +20,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,6 +29,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -201,5 +205,40 @@ class UserServiceTest {
 
         // Then:
         verify(userRepository).delete(user);
+    }
+
+    @Test
+    void shouldLoadUserByUsername() {
+        // Given:
+        var username = "username";
+        var password = "password";
+        var role = Role.ADMIN;
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setRole(role);
+
+        doReturn(Optional.of(user)).when(userRepository).findByUsername(username);
+
+        // When:
+        UserDetails actualResult = userService.loadUserByUsername(username);
+
+        // Then:
+        assertEquals(username, actualResult.getUsername());
+        assertEquals(password, actualResult.getPassword());
+        assertNotNull(actualResult.getAuthorities());
+        actualResult.getAuthorities().stream().findFirst().ifPresent(actualRole -> assertEquals(role, actualRole));
+    }
+
+    @Test
+    void shouldThrowExceptionIfNotFoundUserByUsername() {
+        // Given:
+        var username = "username";
+
+        doReturn(Optional.empty()).when(userRepository).findByUsername(username);
+
+        // When-Then:
+        assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername(username));
     }
 }

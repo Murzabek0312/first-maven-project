@@ -9,6 +9,9 @@
     <label for="username">Username:
         <input id="username" type="text" name="username" th:value="*{username}">
     </label><br>
+    <label for="rawPassword">Password:
+        <input id="rawPassword" type="password" name="rawPassword">
+    </label><br>
     <label for="firstName">FirstName:
         <input id="firstName" type="text" name="firstName" th:value="*{firstName}">
     </label><br>
@@ -18,9 +21,13 @@
     <label for="email">Email:
         <input id="email" type="text" name="email" th:value="*{email}">
     </label><br>
-    <label for="image">Email:
+    <label for="image">Image:
         <input id="image" type="file" name="image">
     </label><br>
+    <div th:each="role : ${roles}">
+        <input th:id="${role}" type="radio" name="role" th:value="${role}" th:checked="${role == user.role}">
+        <label th:for="${role}" th:text="${role}">Role name</label>
+    </div>
     <button type="submit">Register</button>
 
     <div th:if="${errors}">
