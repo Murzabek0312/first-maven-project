@@ -3,6 +3,7 @@ package com.mentor.dmdev.service;
 import com.mentor.dmdev.dto.MovieCreateEditDto;
 import com.mentor.dmdev.dto.MovieReadDto;
 import com.mentor.dmdev.entity.Movie;
+import com.mentor.dmdev.enums.SubscriptionTypes;
 import com.mentor.dmdev.mappers.MovieMapper;
 import com.mentor.dmdev.repository.MovieRepository;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -31,6 +33,9 @@ class MovieServiceTest {
 
     @Mock
     private MovieMapper movieMapper;
+
+    @Mock
+    private SubscriptionService subscriptionService;
 
     @InjectMocks
     private MovieService movieService;
@@ -102,11 +107,16 @@ class MovieServiceTest {
         var mappedMovie = mock(Movie.class);
         var updatedMovie = mock(Movie.class);
         var movieReadDto = mock(MovieReadDto.class);
+        var subscriptionId = 11L;
+        var subscriptionTypes = SubscriptionTypes.PREMIUM;
 
         doReturn(Optional.of(movie)).when(repository).findById(id);
         doReturn(mappedMovie).when(movieMapper).map(movieCreateEditDto, movie);
         doReturn(updatedMovie).when(repository).saveAndFlush(mappedMovie);
         doReturn(movieReadDto).when(movieMapper).map(updatedMovie);
+        doReturn(subscriptionId).when(movieCreateEditDto).getSubscriptionId();
+        doReturn(subscriptionTypes).when(movieCreateEditDto).getSubscriptionTypes();
+        doNothing().when(subscriptionService).updateType(subscriptionId, subscriptionTypes);
 
         // When:
         var result = movieService.update(id, movieCreateEditDto);

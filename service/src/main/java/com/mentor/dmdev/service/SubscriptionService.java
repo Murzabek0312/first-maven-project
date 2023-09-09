@@ -28,8 +28,14 @@ public class SubscriptionService {
         return subscriptionMapper.map(subscriptionRepository.findAll());
     }
 
-    @Transactional
     @NonNull
+    public Optional<SubscriptionReadDto> findById(@NonNull Long id) {
+        return subscriptionRepository.findById(id)
+                .map(subscriptionMapper::map);
+    }
+
+    @NonNull
+    @Transactional
     public SubscriptionReadDto create(@NonNull SubscriptionCreateEditDto subscriptionCreateEditDto) {
         return Optional.of(subscriptionCreateEditDto)
                 .map(subscriptionMapper::map)
@@ -45,5 +51,15 @@ public class SubscriptionService {
         subscription.setType(SubscriptionTypes.STANDART);
         subscription.setStatus(SubscriptionStatus.ACTIVE);
         return subscriptionRepository.save(subscription);
+    }
+
+    @Transactional
+    public void updateType(@NonNull Long id, @NonNull SubscriptionTypes type) {
+        subscriptionRepository.findById(id)
+                .map(subscription -> {
+                    subscription.setType(type);
+                    return subscription;
+                })
+                .map(subscriptionRepository::saveAndFlush);
     }
 }

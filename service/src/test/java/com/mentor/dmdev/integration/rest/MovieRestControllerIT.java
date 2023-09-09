@@ -64,7 +64,7 @@ class MovieRestControllerIT extends BaseIT {
     void update() throws Exception {
         mockMvc.perform(put("/api/v1/movies/" + MOVIE_ID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"updatedFilm\",\"directorId\":\"3\",\"releaseDate\":\"2023-08-26\",\"country\":\"Canada\",\"genre\":\"ACTION\",\"subscriptionId\":\"1\"}"))
+                        .content("{\"name\":\"updatedFilm\",\"directorId\":\"3\",\"releaseDate\":\"2023-08-26\",\"country\":\"Canada\",\"genre\":\"ACTION\",\"subscriptionId\":\"1\",\"subscriptionTypes\":\"ULTRA\"}"))
                 .andExpectAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
@@ -72,7 +72,8 @@ class MovieRestControllerIT extends BaseIT {
                         jsonPath("$.name", is("updatedFilm")),
                         jsonPath("$.country", is("Canada")),
                         jsonPath("$.directorId", is(3)),
-                        jsonPath("$.releaseDate", is("2023-08-26"))
+                        jsonPath("$.releaseDate", is("2023-08-26")
+                        )
                 );
     }
 
