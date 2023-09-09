@@ -1,5 +1,6 @@
 package com.mentor.dmdev.entity;
 
+import com.mentor.dmdev.dto.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,8 @@ import lombok.ToString;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,6 +51,10 @@ public class User implements BaseEntity<Long> {
 
     @Column
     private String image;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     private Subscription subscription;

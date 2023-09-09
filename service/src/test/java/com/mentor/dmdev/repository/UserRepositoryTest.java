@@ -26,7 +26,7 @@ class UserRepositoryTest extends BaseIT {
         assertEquals("username", actualResult.get().getUsername());
         assertEquals("firstName", actualResult.get().getFirstName());
         assertEquals("secondName", actualResult.get().getSecondName());
-        assertEquals("password", actualResult.get().getPassword());
+        assertEquals("{noop}password", actualResult.get().getPassword());
         assertEquals("email", actualResult.get().getEmail());
     }
 
@@ -44,7 +44,7 @@ class UserRepositoryTest extends BaseIT {
         assertTrue(actualResult.isPresent());
         assertEquals("new firstname", actualResult.get().getFirstName());
         assertEquals("new secondname", actualResult.get().getSecondName());
-        assertEquals("password", actualResult.get().getPassword());
+        assertEquals("{noop}password", actualResult.get().getPassword());
         assertEquals("email", actualResult.get().getEmail());
         assertEquals("username", actualResult.get().getUsername());
     }

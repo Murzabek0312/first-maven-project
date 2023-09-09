@@ -3,6 +3,7 @@ package com.mentor.dmdev;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -16,6 +17,7 @@ import javax.persistence.EntityManager;
 @SpringBootTest
 @ActiveProfiles("test")
 @Sql("classpath:prepareIntegrationTest.sql")
+@WithMockUser(username = "test@gmail.com", password = "test", authorities = {"ADMIN", "USER"})
 public abstract class BaseIT {
 
     private static final PostgreSQLContainer<?> CONTAINER = new PostgreSQLContainer<>("postgres:13");

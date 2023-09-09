@@ -33,6 +33,6 @@ class LoginControllerTest extends BaseIT {
                         .param(username, "username")
                         .param(password, "password")
                 )
-                .andExpect(redirectedUrl("/login"));
+                .andExpect(redirectedUrl("/users"));
     }
 }
