@@ -3,6 +3,7 @@ package com.mentor.dmdev.service;
 import com.mentor.dmdev.dto.SubscriptionCreateEditDto;
 import com.mentor.dmdev.dto.SubscriptionReadDto;
 import com.mentor.dmdev.entity.Subscription;
+import com.mentor.dmdev.enums.SubscriptionTypes;
 import com.mentor.dmdev.mappers.SubscriptionMapper;
 import com.mentor.dmdev.repository.SubscriptionRepository;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,8 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -65,5 +68,24 @@ class SubscriptionServiceTest {
         assertEquals(subscriptionCreateEditDto, captor.getValue());
         verify(subscriptionRepository).save(subscription);
         verify(subscriptionMapper).map(savedSubscription);
+    }
+
+    @Test
+    void shouldUpdateType() {
+        // Given:
+        var id = 12L;
+        var subscriptionTypes = SubscriptionTypes.PREMIUM;
+        var subscription = new Subscription();
+        var captor = ArgumentCaptor.forClass(Subscription.class);
+
+        doReturn(Optional.of(subscription)).when(subscriptionRepository).findById(id);
+
+        // When:
+        subscriptionService.updateType(id, subscriptionTypes);
+
+        // Then:
+        verify(subscriptionRepository).saveAndFlush(captor.capture());
+        Subscription value = captor.getValue();
+        assertEquals(subscriptionTypes, value.getType());
     }
 }

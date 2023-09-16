@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies</title>
+</head>
+<body>
+<p4>Фильмы</p4>
+<br>
+<div th:each="movie : ${movies.content}">
+    <a th:href="@{'/movies/' + ${movie.id}}" th:text="${movie.name}">Movie</a>
+</div>
+<br>
+<div>
+    <label for="page">Page:
+        <input id="page" type="number" name="page" th:value="${movies.metadata.page}">
+    </label>
+    <label for="size">Size:
+        <input id="size" type="number" name="size" th:value="${movies.metadata.size}">
+    </label>
+</div>
+</body>
+</html>

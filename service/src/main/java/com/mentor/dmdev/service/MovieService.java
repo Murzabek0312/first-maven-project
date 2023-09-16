@@ -18,8 +18,8 @@ import java.util.Optional;
 public class MovieService {
 
     private final MovieRepository repository;
-
     private final MovieMapper movieMapper;
+    private final SubscriptionService subscriptionService;
 
     public Page<MovieReadDto> findAll(Pageable pageable) {
         return repository.findAll(pageable)
@@ -42,6 +42,8 @@ public class MovieService {
 
     @Transactional
     public Optional<MovieReadDto> update(Long id, MovieCreateEditDto movieCreateEditDto) {
+        subscriptionService.updateType(movieCreateEditDto.getSubscriptionId(),
+                movieCreateEditDto.getSubscriptionTypes());
         return repository.findById(id)
                 .map(movie -> movieMapper.map(movieCreateEditDto, movie))
                 .map(repository::saveAndFlush)

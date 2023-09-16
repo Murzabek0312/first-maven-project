@@ -5,30 +5,31 @@
     <title>Registration</title>
 </head>
 <body>
+<div th:insert="~{fragment :: locale}"></div>
 <form th:action="@{/users}" method="post" enctype="multipart/form-data" th:object="${user}">
-    <label for="username">Username:
+    <label for="username"> <span th:text="#{login.username}">Username:</span>
         <input id="username" type="text" name="username" th:value="*{username}">
     </label><br>
-    <label for="rawPassword">Password:
+    <label for="rawPassword"> <span th:text="#{login.password}">Password:</span>
         <input id="rawPassword" type="password" name="rawPassword">
     </label><br>
-    <label for="firstName">FirstName:
+    <label for="firstName"> <span th:text="#{login.firstname}">FirstName:</span>
         <input id="firstName" type="text" name="firstName" th:value="*{firstName}">
     </label><br>
-    <label for="secondName">SecondName:
+    <label for="secondName"><span th:text="#{login.secondName}">SecondName:</span>
         <input id="secondName" type="text" name="secondName" th:value="*{secondName}">
     </label><br>
-    <label for="email">Email:
+    <label for="email"> <span th:text="#{login.email}">Email:</span>
         <input id="email" type="text" name="email" th:value="*{email}">
     </label><br>
-    <label for="image">Image:
+    <label for="image"> <span th:text="#{login.image}">Image:</span>
         <input id="image" type="file" name="image">
     </label><br>
     <div th:each="role : ${roles}">
         <input th:id="${role}" type="radio" name="role" th:value="${role}" th:checked="${role == user.role}">
         <label th:for="${role}" th:text="${role}">Role name</label>
     </div>
-    <button type="submit">Register</button>
+    <button type="submit"><span th:text="#{login.register}">Register</span></button>
 
     <div th:if="${errors}">
         <p style="color: red" th:each="error: ${errors}" th:text="${error.defaultMessage}">ErrorMessage</p>

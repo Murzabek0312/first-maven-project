@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie</title>
+</head>
+<body>
+<form th:action="@{/movies/{movieId}/update(movieId=${movie.id})}" method="post"
+      th:object="${movie}">
+    <label for="name">Name:
+        <input id="name" type="text" name="name" th:value="*{name}">
+    </label><br>
+    <label for="releaseDate">ReleaseDate:
+        <input id="releaseDate" type="date" name="releaseDate" th:value="*{releaseDate}">
+    </label><br>
+    <label for="director">Director:
+        <input id="director" type="text" name="directorId" th:value="*{directorId}">
+    </label><br>
+    <label for="country">Country:
+        <input id="country" type="text" name="country" th:value="*{country}">
+    </label><br>
+    <label for="genre">Genre:
+        <input id="genre" type="text" name="genre" th:value="*{genre}">
+    </label><br>
+
+    <input id="subscriptionId" type="hidden" name="subscriptionId" th:value="*{subscriptionId}">
+
+    <div th:each="sub : ${subscriptions}">
+        <input th:id="${sub}" type="radio" name="subscriptionTypes" th:value="${sub.name()}"
+               th:checked="${sub.name() == subscription.type.name()}"/>
+        <label th:for="${sub}" th:text="${sub.name()}">Subscription</label>
+    </div>
+
+    <p>Actors:</p>
+    <div th:each="actor : ${actors}">
+        <a th:href="@{'/actors/' + ${actor.id}}" th:text="|${actor.firstname} ${actor.secondname}|">Actor</a>
+    </div>
+    <br>
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>
